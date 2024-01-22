@@ -56,7 +56,7 @@ Testing the model on a selected test dataset you have to run the following comma
 * batch_size: you can provide the batch size for testing, the deafult is 8.
 
 ```
-python run.py −−test_folder $dataset_path$ −−model_path $model_path$
+python run.py --test_folder dataset --model_path weights/model_unet.pth
 ```
 After running this command the script generates a metrics.txt file where the used metrics are collected. We implemented 5 different kind of metrics: __Intersection over Union__, __Mean Intersection over Union__, __Pixel Accuracy__, __Mean Pixel Accuracy__, __Dice Coefficient__. Also, the script plots 5 randomly generated examples with original image, and the predicted mask. 
 
