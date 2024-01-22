@@ -57,5 +57,6 @@ Testing the model on a selected test dataset you have to run the following comma
 ```
 python run.py −−test_folder $dataset_path$ −−model_path $model_path$
 ```
+After running this command the script generates a metrics.txt file where the used metrics are collected. Also, the script plots 5 randomly generated examples with original image, and the predicted mask. 
 
 ## Results
