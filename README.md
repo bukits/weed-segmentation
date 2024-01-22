@@ -1,7 +1,7 @@
-# Advanced Methods for Image Processing course 
-# Weed segmentation final project on the CropSegmentation Dataset
+# Advanced Methods for Image Processing course at the University of Bordeaux
+## Weed segmentation final project on the CropSegmentation Dataset
 
-# Authors: Hala __Zayzafoun__, Bolutofi __Atoki__, Tamas __Bukits__
+Authors: Hala __Zayzafoun__, Bolutofi __Atoki__, Tamas __Bukits__
  
  ## Introduction
 The aim of this project was to implement crop and weed segmentation on images taken by a drone
@@ -47,6 +47,12 @@ To use this project, follow these steps:
     which will create the __model_vae.pth__.
 
 ## Testing the model
+
+Testing the model on a selected test dataset you have to run the following command with the paramaeters:
+
+* test_folder: path to the test dataset which has 2 folders (images, labels)
+* model_path: path to the trained model which can be UNet or VAE.
+* batch_size: you can provide the batch size for testing, the deafult is 8.
 
 ```
 python run.py −−test_folder $dataset_path$ −−model_path $model_path$
