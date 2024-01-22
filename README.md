@@ -1,7 +1,7 @@
 # Advanced Methods for Image Processing course at the University of Bordeaux
 ## Weed segmentation final project on the CropSegmentation Dataset
 
-Authors: Hala __Zayzafoun__, Bolutofi __Atoki__, Tamas __Bukits__
+Authors: Hala __Zayzafoun__, Bolutife __Atoki__, Tamas __Bukits__
  
  ## Introduction
 The aim of this project was to implement crop and weed segmentation on images taken by a drone
