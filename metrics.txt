@@ -2,5 +2,5 @@ Metric calculation results:
 Intersection Over Union Metric: 0.015511985868215561
 Mean Intersection Over Union: 0.006517082452774048
 Pixel Accuracy: 0.018601182848215103
-Mean Pixel Accuracy: 0.0
+Mean Pixel Accuracy: 0.07531
 Dice Coefficient: 0.017026163637638092
