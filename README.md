@@ -28,10 +28,8 @@ To use this project, follow these steps:
     Intsalling the python packages you have to run the package installation file:
 
     ``` 
-    pip install -r requirements.txt
+    conda env create --file=environment.yml
     ```
-
-
 
 ## Training the model
 
