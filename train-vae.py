@@ -55,4 +55,4 @@ trainer = VAETrainer(model=model, loss=loss, optimizer=optimizer)
 # Do the training
 trainer.fit(train_loader, epoch=epoch)
 
-torch.save(model.state_dict(), 'model2.pth')
+torch.save(model.state_dict(), 'model_vae.pth')

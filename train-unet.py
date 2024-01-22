@@ -52,7 +52,7 @@ trainer = UNETTrainer(model=model, loss=loss, optimizer=optimizer)
 # Do the training
 trainer.fit(train_loader, epoch=epoch)
 
-torch.save(model.state_dict(), 'unet_model.pth')
+torch.save(model.state_dict(), 'model_unet.pth')
 
 # Compute metrics
 # TODO: implement metrics
