@@ -18,7 +18,7 @@ class Metric(ABC):
                 predicted_mask_batch = predicted_masks_batched[i]
 
                 out = self.batch_compute([predicted_mask_batch, true_mask_batch])
-                cumulative_score += out.sum(dim=0)
+                cumulative_score += out
                 n_batch += 1.
 
             res = out / n_batch
@@ -56,7 +56,7 @@ class IntersectionOverUnion(Metric):
     
 class MeanIntersectionOverUnion(IntersectionOverUnion):
     def __init__(self, use_cuda: bool = True):
-        super().__init__("Mean IoU", use_cuda=use_cuda)
+        super().__init__("Mean IoU")
         self.name = "Mean Intersection Over Union"
 
     def batch_compute(self, inp: List[torch.Tensor]):
@@ -78,11 +78,11 @@ class MeanIntersectionOverUnion(IntersectionOverUnion):
     
 class PixelAccuracy(Metric):
     def __init__(self, use_cuda: bool = True):
-        super().__init__("Pixel Accuracy", use_cuda=use_cuda)
+        super().__init__("Pixel Accuracy")
         self.name = "Pixel Accuracy"
 
     def calculate_pixel_accuracy(self, pred, target):
-        pred_flat = pred.view(-1)
+        pred_flat = pred.reshape(-1)
         target_flat = target.view(-1)
 
         correct_pixels = torch.sum(pred_flat == target_flat).item()
@@ -102,7 +102,7 @@ class PixelAccuracy(Metric):
 
 class MeanPixelAccuracy(PixelAccuracy):
     def __init__(self, use_cuda: bool = True):
-        super().__init__("Mean Pixel Accuracy", use_cuda=use_cuda)
+        super().__init__("Mean Pixel Accuracy")
         self.name = "Mean Pixel Accuracy"
 
     def batch_compute(self, inp: List[torch.Tensor]):
@@ -124,7 +124,7 @@ class MeanPixelAccuracy(PixelAccuracy):
 
 class DiceCoefficient(Metric):
     def __init__(self, use_cuda: bool = True):
-        super().__init__("Dice Coefficient", use_cuda=use_cuda)
+        super().__init__("Dice Coefficient")
         self.name = "Dice Coefficient"
 
     def calculate_dice_coefficient(self, pred_mask, target_mask, threshold=0.5):

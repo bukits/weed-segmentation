@@ -1,5 +1,6 @@
 import argparse
 import torch
+import torch.nn as nn
 from torchvision.transforms import Compose
 from torch.utils.data import DataLoader
 from torchvision.transforms import Resize
@@ -13,6 +14,11 @@ from metrics import *
 import matplotlib.pyplot as plt
 import random
 from scipy.ndimage import binary_erosion
+import sys
+sys.path.append("..")
+
+from cbdnet.cbdnet import Network
+
 
 def extract_model_name(model_path):
     filename = os.path.basename(model_path)
@@ -41,14 +47,26 @@ if __name__ == '__main__':
     input_channel = 3
     num_examples = 5
 
+    print('Loading denoising model...')    
+
+    denoising_model = Network()
+    denoising_model.cuda()
+    denoising_model = nn.DataParallel(denoising_model)
+
+    denoising_model.eval()
+
+    model_info = torch.load('cbdnet/save_model/checkpoint.pth.tar')
+    denoising_model.load_state_dict(model_info['state_dict'])
+    print('Denoising model is loaded.')
+
     if model_name == "vae":
         transform = Compose([
-            Resize((64, 64)),
+            Resize((512, 512)),
             lambda z: torch.from_numpy(np.array(z, copy=True)).to(dtype=torch.float32) / 255
         ])
 
         transform_masks = Compose([
-            Resize((64, 64)),
+            Resize((512, 512)),
         ])
     elif model_name == "unet":
         transform = Compose([
@@ -79,7 +97,7 @@ if __name__ == '__main__':
         trainer = UNETTrainer(model=model, loss=None, optimizer=None)
     print('Model is loaded.')
 
-    print('Metric calculation has been started...')
+    print('Metric calculation has started...')
     iou_metric = IntersectionOverUnion()
     miou_metric = MeanIntersectionOverUnion()
     pixel_metric = PixelAccuracy()
@@ -121,19 +139,22 @@ if __name__ == '__main__':
         mask_predicted = torch.from_numpy(mask_predicted)
         mask_predicted = mask_predicted.float()
         mask_single_channel = torch.argmax(mask_predicted, dim=0)
-        mask_predicted = mask_single_channel.cpu().numpy()
+        mask_predicted = mask_single_channel.cpu()
 
-        if model_name == "unet":
-            mask_predicted = binary_erosion(mask_predicted, structure=np.ones((5,5)))
+        _, denoised_image = denoising_model(mask_predicted.unsqueeze(0).repeat(3, 1, 1).unsqueeze(0).float())
+
+        # commented since we are cbdnet denoising
+        #if model_name == "unet":
+            #mask_predicted = binary_erosion(mask_predicted, structure=np.ones((5,5)))
 
         axes[i, 0].imshow(image)
         axes[i, 0].set_title('Input Image')
 
-        axes[i, 1].imshow(mask_true, cmap='jet')
-        axes[i, 1].set_title('True Mask')
+        axes[i, 1].imshow(mask_predicted.numpy(), cmap='jet')
+        axes[i, 1].set_title('Predicted Mask')
 
-        axes[i, 2].imshow(mask_predicted, cmap='jet')
-        axes[i, 2].set_title('Predicted Mask')
+        axes[i, 2].imshow(denoised_image.squeeze(0).permute(1,2,0).detach().cpu().numpy(), cmap='jet')
+        axes[i, 2].set_title('Denoised Predicted Mask')
 
     plt.tight_layout()
     plt.show()

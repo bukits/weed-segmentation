@@ -6,7 +6,6 @@ from torch.utils.data import Dataset
 from typing import Optional, Callable
 
 from utils import expanded_join
-from torchvision.transforms import ToTensor
 import torch
 
 class CropSegmentationDataset(Dataset):
