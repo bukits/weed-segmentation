@@ -14,6 +14,9 @@ architectures) for segmenting, and applying the Convolutional Blind Denoising Ne
 removal, and then evaluating the segmentation networks using Metrics provided during the lecture
 and labs.
 
+The technical report can be found under this [link](https://drive.google.com/file/d/1rQsxrThFs16HY8nAbEzaAgcdCvBHVW8i/view?usp=share_link).
+
+
 ## Installation
 
 To use this project, follow these steps:
