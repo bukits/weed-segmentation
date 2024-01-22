@@ -6,20 +6,18 @@ from torchvision.transforms import Resize
 from dataset import CropSegmentationDataset
 from vae import VariationalAutoEncoder
 import numpy as np
-from metrics import CustomIoUMetric
 from trainer import VAETrainer
 from loss import VAELoss
 import matplotlib.pyplot as plt
 from skimage.transform import resize
 
 transform = Compose([
-    Resize((64, 64)),  # Image of size 64x64 for faster training
-    lambda z: torch.from_numpy(np.array(z, copy=True)).to(dtype=torch.float32) / 255  # Normalize between 0 and 1
+    Resize((64, 64)),
+    lambda z: torch.from_numpy(np.array(z, copy=True)).to(dtype=torch.float32) / 255
 ])
 
 transform_masks = Compose([
-    Resize((64, 64)),  # Image of size 64x64 for faster training
-    #lambda z: torch.from_numpy(np.array(z, copy=True)).to(dtype=torch.float32) / (torch.max(z) + 1e-8) # Normalize between 0 and 1
+    Resize((64, 64)),
 ])
 
 batch_size = 8
@@ -80,11 +78,3 @@ plt.imshow(mask_predicted, cmap='jet')
 plt.title('Predicted Mask')
 
 plt.show()
-
-"""
-metrics = [CustomIoUMetric()]
-
-scores = trainer.eval(val_loader, metrics)
-print(scores[0])
-
-print("job's done.")"""

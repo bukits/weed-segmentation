@@ -9,7 +9,7 @@ import numpy as np
 import os
 from unet import UNet
 from trainer import VAETrainer, UNETTrainer
-from metrics import CustomIoUMetric
+from metrics import *
 import matplotlib.pyplot as plt
 import random
 from scipy.ndimage import binary_erosion
@@ -80,8 +80,12 @@ if __name__ == '__main__':
     print('Model is loaded.')
 
     print('Metric calculation has been started...')
-    iou_metric = CustomIoUMetric()
-    metrics = [iou_metric]
+    iou_metric = IntersectionOverUnion()
+    miou_metric = MeanIntersectionOverUnion()
+    pixel_metric = PixelAccuracy()
+    mean_pixel_metric = MeanPixelAccuracy()
+    dice_metric = DiceCoefficient()
+    metrics = [iou_metric, miou_metric, pixel_metric, mean_pixel_metric, dice_metric]
     scores, names = trainer.eval(test_loader, metrics)
     print('Metric calculation is done.')
 
@@ -97,6 +101,7 @@ if __name__ == '__main__':
     selected_indices = random.sample(range(0, dataset_length), num_examples)
     fig, axes = plt.subplots(num_examples, 3, figsize=(12, 18))
 
+    # remove the ground thruth column when submitting
     for i, index in enumerate(selected_indices):
         image = test_dataset[index][0].unsqueeze(0)
         image = image.cuda()

@@ -8,17 +8,14 @@ from vae import VariationalAutoEncoder
 from loss import VAELoss
 from trainer import VAETrainer
 import numpy as np
-from metrics import CustomIoUMetric
-from torchvision.transforms import RandomHorizontalFlip, RandomVerticalFlip
 
 transform_images = Compose([
     Resize((64, 64)),
-    lambda z: torch.from_numpy(np.array(z, copy=True)).to(dtype=torch.float32) / 255  # Normalize between 0 and 1
+    lambda z: torch.from_numpy(np.array(z, copy=True)).to(dtype=torch.float32) / 255 
 ])
 
 transform_masks = Compose([
     Resize((64, 64)),
-    #lambda z: torch.from_numpy(np.array(z, copy=True)).to(dtype=torch.float32) / (torch.max(z) + 1e-8) # Normalize between 0 and 1
 ])
 
 batch_size = 8

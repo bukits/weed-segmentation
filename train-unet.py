@@ -5,11 +5,9 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import Resize
 from dataset import CropSegmentationDataset
 from unet import UNet
-from vae import VariationalAutoEncoder
 from loss import UNetLoss
 from trainer import UNETTrainer
 import numpy as np
-from metrics import CustomIoUMetric
 
 transform_images = Compose([
     Resize((512, 512)),  # Image of size 64x64 for faster training
@@ -24,7 +22,6 @@ transform_masks = Compose([
 batch_size = 8
 lr = 1e-4
 epoch = 10
-
 
 # Load data and generate batches
 train_dataset = CropSegmentationDataset(set_type="train", transform=transform_images, target_transform=transform_masks)
@@ -54,11 +51,5 @@ trainer.fit(train_loader, epoch=epoch)
 
 torch.save(model.state_dict(), 'model_unet.pth')
 
-# Compute metrics
-# TODO: implement metrics
-#metrics = [CustomIoUMetric()]
-
-#scores = trainer.eval(val_loader, metrics)
-#print(scores[0])
 
 print("job's done.")
