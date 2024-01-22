@@ -1,0 +1,2 @@
+Metric calculation results:
+IOU Metric: 0.0010590233141556382
